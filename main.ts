@@ -13,20 +13,28 @@ class Energy {
 }
 
 class Length {
-  public cm: number;
-  units = {
-    in: 2.54,
-    mile: 160934.4,
-    m: 100,
-    km: 1000,
+  private value: number;
+  private units: { [key: string]: number } = {
+    meters: 1,
+    miles: 1609,
+    kms: 1000,
+    cm: 0.01,
   };
 
-  constructor(cm: number) {
-    this.cm = cm;
+  constructor(value: number, unit: string = "gram") {
+    this.value = value * this.units[unit];
+  }
+
+  get cm(): number {
+    return this.value / this.units.cm;
+  }
+
+  get meters(): number {
+    return this.value;
   }
 
   add(l: Length): Length {
-    return new Length(this.cm + l.cm);
+    return new Length(this.meters + l.meters);
   }
 }
 
@@ -52,42 +60,52 @@ class Stretch {
 }
 
 class Weight {
-  public kg: number;
-  units = {
-    lb: 0.453592,
-    stone: 6.35029,
+  private value: number;
+  private units: { [key: string]: number } = {
+    grams: 1,
+    lbs: 456,
+    stone: 6350,
+    kgs: 1000,
   };
 
-  constructor(kg: number) {
-    this.kg = kg;
+  constructor(value: number, unit: string = "gram") {
+    this.value = value * this.units[unit];
   }
 
-  add(w: Weight) {
-    return new Weight(this.kg + w.kg);
+  get grams(): number {
+    return this.value;
   }
+
+  get kgs(): number {
+    return this.value / this.units.kgs;
+  }
+
+  add = (w: Weight) => new Weight(this.grams + w.grams);
 }
 
 class Duration {
-  public seconds: number;
+  private value: number;
+  private units: { [key: string]: number } = {
+    seconds: 1,
+    minutes: 60,
+    hours: 3600,
+  };
 
-  constructor(seconds: number) {
-    this.seconds = seconds;
+  constructor(value: number, unit: string = "seconds") {
+    this.value = value * this.units[unit];
+  }
+
+  get seconds() {
+    return this.value;
+  }
+
+  get hours() {
+    return this.value / this.units.hours;
+  }
+
+  get minutes() {
+    return this.value / this.units.minutes;
   }
 }
 
-class Velocity {
-  private distance: Length;
-  private duration: Duration;
-
-  constructor(distance: Length, duration: Duration) {
-    this.distance = distance;
-    this.duration = duration;
-  }
-}
-
-class CalorieCalculator {
-  calculate(person: Person, stretch: Stretch, surface: Surface) {
-  }
-}
-
-export { Energy };
+export { Duration, Energy, Length, Weight };
