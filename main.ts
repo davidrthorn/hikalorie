@@ -1,3 +1,5 @@
+import { day } from "./deps.ts";
+
 class Energy {
   public calories: number;
 
@@ -26,24 +28,12 @@ class Length {
   add(l: Length): Length {
     return new Length(this.cm + l.cm);
   }
-
-  subtract(l: Length): Length {
-    return new Length(this.cm - l.cm);
-  }
-
-  multiplyBy(l: Length): Length {
-    return new Length(this.cm * l.cm);
-  }
-
-  divideBy(l: Length): Length {
-    return new Length(this.cm / l.cm);
-  }
 }
 
 class Person {
-  public height;
-  public weight;
-  public personalConstant;
+  public height: Length;
+  public weight: Weight;
+  public personalConstant: number;
 
   constructor(height: Length, weight: Weight, personalConstant: number) {
     this.height = height;
@@ -63,9 +53,35 @@ class Stretch {
 
 class Weight {
   public kg: number;
+  units = {
+    lb: 0.453592,
+    stone: 6.35029,
+  };
 
   constructor(kg: number) {
     this.kg = kg;
+  }
+
+  add(w: Weight) {
+    return new Weight(this.kg + w.kg);
+  }
+}
+
+class Duration {
+  public seconds: number;
+
+  constructor(seconds: number) {
+    this.seconds = seconds;
+  }
+}
+
+class Velocity {
+  private distance: Length;
+  private duration: Duration;
+
+  constructor(distance: Length, duration: Duration) {
+    this.distance = distance;
+    this.duration = duration;
   }
 }
 
