@@ -1,4 +1,4 @@
-import { Duration, Energy, Length, Weight } from "./main.ts";
+import { Duration, Energy, Length, Person, Weight } from "./main.ts";
 
 // 1.44 + 1.94*S^0.43 + 0.24*S^4 + 0.34*S*G*(1-1.05^(1-1.1^(G+32)))
 
@@ -8,7 +8,7 @@ export default class CalorieCalculator {
     distance: Length,
     time: Duration,
   ) {
-    const velocity = distance.meters / time.seconds;
+    const velocity = distance.m / time.s;
 
     return 1.44 +
       1.94 * velocity ** 0.43 +
@@ -17,18 +17,20 @@ export default class CalorieCalculator {
         (1 - 1.05 ** (1 - 1.1 ** (gradient + 32)));
   }
 
-  energy(wattsPerKg: number, duration: Duration, weight: Weight) {
-    return new Energy(wattsPerKg * weight.kgs * duration.hours);
+  energy(wattsPerKg: number, duration: Duration, person: Person) {
+    const cals = wattsPerKg * duration.hr * person.weight.kg;
+    const energy = new Energy(cals);
+
+    return energy.subtract(person.bmr.divide(24));
   }
 
-  calories(
-    weight: Weight,
+  calculate(
+    person: Person,
     duration: Duration,
     distance: Length,
     gradient: number,
-  ) {
+  ): Energy {
     const wpkg = this.wattsPerKg(gradient, distance, duration);
-    const energy = this.energy(wpkg, duration, weight);
-    return energy.calories;
+    return this.energy(wpkg, duration, person);
   }
 }
