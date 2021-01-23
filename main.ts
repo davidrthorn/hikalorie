@@ -1,15 +1,14 @@
 class Energy {
-  calories: number
+  calories: number;
 
   constructor(calories: number) {
-    this.calories = calories
+    this.calories = calories;
   }
 
   get joules(): number {
-    return this.calories * 4184
+    return this.calories * 4184;
   }
 }
-
 
 class Height {
 }
@@ -29,6 +28,4 @@ class Stretch {
 class Weight {
 }
 
-export {
-  Energy
-}
+export { Energy };
