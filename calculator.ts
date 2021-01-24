@@ -1,4 +1,6 @@
-import { Duration, Energy, Length, Person, Weight } from "./main.ts";
+import { Person } from "./main.ts";
+import { Duration, Energy, Length, Weight } from "./measure.ts";
+import Walk from "./walk.ts";
 
 // 1.44 + 1.94*S^0.43 + 0.24*S^4 + 0.34*S*G*(1-1.05^(1-1.1^(G+32)))
 
@@ -26,11 +28,10 @@ export default class CalorieCalculator {
 
   calculate(
     person: Person,
-    duration: Duration,
-    distance: Length,
+    walk: Walk,
     gradient: number,
   ): Energy {
-    const wpkg = this.wattsPerKg(gradient, distance, duration);
-    return this.energy(wpkg, duration, person);
+    const wpkg = this.wattsPerKg(gradient, walk.distance, walk.duration);
+    return this.energy(wpkg, walk.duration, person);
   }
 }
